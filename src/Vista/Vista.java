@@ -20,4 +20,15 @@ public class Vista {
         System.out.println("3) Electronica");
         System.out.println("0) Tornar");
     }
+
+    public static void menuTextilComposicio() {
+        System.out.println("----------------");
+        System.out.println("-- COMPOSICIO -- ");
+        System.out.println("----------------");
+        System.out.println("1) Cotó");
+        System.out.println("2) Llana");
+        System.out.println("3) Poliester");
+        System.out.println("4) Altres");
+        System.out.println("----------------");
+    }
 }
