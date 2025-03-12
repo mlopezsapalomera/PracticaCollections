@@ -5,20 +5,33 @@ import Model.Objectes.Textil;
 import java.util.*;
 
 public class Model {
+    private static final int MAX_PRODUCTS = 100;
     private static List<Aliment> aliments = new ArrayList<>();
     private static List<Textil> textils = new ArrayList<>();
     private static List<Electronica> electronicas = new ArrayList<>();
 
-    public static void addAliment(Aliment aliment){
-        aliments.add(aliment);
+    public static boolean addAliment(Aliment aliment){
+        if (aliments.size() + textils.size() + electronicas.size() < MAX_PRODUCTS) {
+            aliments.add(aliment);
+            return true;
+        }
+        return false;
     }
 
-    public static void addTextil(Textil textil){
-        textils.add(textil);
+    public static boolean addTextil(Textil textil){
+        if (aliments.size() + textils.size() + electronicas.size() < MAX_PRODUCTS) {
+            textils.add(textil);
+            return true;
+        }
+        return false;
     }
 
-    public static void addElectronica(Electronica electronica){
-        electronicas.add(electronica);
+    public static boolean addElectronica(Electronica electronica){
+        if (aliments.size() + textils.size() + electronicas.size() < MAX_PRODUCTS) {
+            electronicas.add(electronica);
+            return true;
+        }
+        return false;
     }
 
     public static List<Aliment> getAliments() {
@@ -46,5 +59,4 @@ public class Model {
         }
         return preuTotal;
     }
-
 }

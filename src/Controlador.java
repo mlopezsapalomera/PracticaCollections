@@ -27,7 +27,7 @@ public class Controlador {
                     //pasarPerCaixa();
                     break;
                 case 3:
-                    //mostrarCarret();
+                    mostrarPreuCarret();
                     break;
                 case 0:
                     System.out.println("Fins aviat!");
@@ -62,6 +62,10 @@ public class Controlador {
 
     // Logica y formularios para introducir los productos (Alimentos, Textiles y Electronica)
     public static void introduirAliment() {
+        if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
+            System.out.println("No es poden afegir més productes. El carret està ple.");
+            return;
+        }
         scann.nextLine(); // Limpiar linea nueva
         System.out.print("Nom producte: ");
         String nom = scann.nextLine();
@@ -74,12 +78,20 @@ public class Controlador {
         String dataCaducitatStr = scann.nextLine();
 
         Aliment aliment = new Aliment(nom, preu, codiBarres, dataCaducitatStr);
-        Model.addAliment(aliment);
-        System.out.println("Aliment afegit correctament!");
+        if (Model.addAliment(aliment)) {
+            System.out.println("Aliment afegit correctament!");
+        } else {
+            System.out.println("No es poden afegir més productes. El carret està ple.");
+        }
     }
 
     public static void introduirTextil() {
+        if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
+            System.out.println("No es poden afegir més productes. El carret està ple.");
+            return;
+        }
         String composicioStr = "";
+        scann.nextLine(); // Limpiar linea nueva
         System.out.println("Nom producte: ");
         String nom = scann.nextLine();
         System.out.println("Preu: ");
@@ -105,11 +117,19 @@ public class Controlador {
         int codiBarres = scann.nextInt();
 
         Textil textil = new Textil (nom, preu, composicioStr, codiBarres);
-        Model.addTextil(textil);
-        System.out.println("Textil afegit correctament!");
+        if (Model.addTextil(textil)) {
+            System.out.println("Textil afegit correctament!");
+        } else {
+            System.out.println("No es poden afegir més productes. El carret està ple.");
+        }
     }
 
     public static void introduirElectronica() {
+        if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
+            System.out.println("No es poden afegir més productes. El carret està ple.");
+            return;
+        }
+        scann.nextLine(); // Limpiar linea nueva
         System.out.println("Nom producte: ");
         String nom = scann.nextLine();
         System.out.println("Preu: ");
@@ -120,8 +140,11 @@ public class Controlador {
         int codiBarres = scann.nextInt();
 
         Electronica electronica = new Electronica(nom, preu, diesGarantia, codiBarres);
-        Model.addElectronica(electronica);
-        System.out.println("Electronica afegida correctament!");
+        if (Model.addElectronica(electronica)) {
+            System.out.println("Electronica afegida correctament!");
+        } else {
+            System.out.println("No es poden afegir més productes. El carret està ple.");
+        }
     }
 
     public static void mostrarPreuCarret() {
