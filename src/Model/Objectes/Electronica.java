@@ -29,4 +29,8 @@ public class Electronica {
         return codiBarres;
     }
 
+    public double calcularPreu() {
+        return preu + preu * (diesGarantia / 365.0) * 0.1;
+    }
+
 }

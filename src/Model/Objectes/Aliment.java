@@ -1,6 +1,7 @@
 package Model.Objectes;
 import java.time.*;
 import java.time.format.*;
+import java.time.temporal.*;
 
 public class Aliment {
     private String nom;
@@ -46,6 +47,12 @@ public class Aliment {
 
     public void setDataCaducitat(LocalDate dataCaducitat) {
         this.dataCaducitat = dataCaducitat;
+    }
+
+    public double calcularPreu() {
+        LocalDate dataActual = LocalDate.now();
+        long diesFinsCaducitat = ChronoUnit.DAYS.between(dataActual, dataCaducitat);
+        return preu - preu * (1.0 / (diesFinsCaducitat + 1)) + (preu * 0.1);
     }
 }
 

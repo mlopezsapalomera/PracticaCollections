@@ -33,4 +33,18 @@ public class Model {
         return textils;
     }
 
+    public static double calcularPreuTotal() {
+        double preuTotal = 0;
+        for (Aliment aliment : aliments) {
+            preuTotal += aliment.calcularPreu();
+        }
+        for (Textil textil : textils) {
+            preuTotal += textil.calcularPreu();
+        }
+        for (Electronica electronica : electronicas) {
+            preuTotal += electronica.calcularPreu();
+        }
+        return preuTotal;
+    }
+
 }

@@ -123,4 +123,10 @@ public class Controlador {
         Model.addElectronica(electronica);
         System.out.println("Electronica afegida correctament!");
     }
+
+    public static void mostrarPreuCarret() {
+        double preuTotal = Model.calcularPreuTotal();
+        Vista.mostrarPreuCarret(preuTotal);
+    }
+
 }

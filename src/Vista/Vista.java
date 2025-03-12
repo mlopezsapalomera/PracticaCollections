@@ -35,4 +35,8 @@ public class Vista {
         System.out.println("4) Altres");
         System.out.println("----------------");
     }
+
+    public static void mostrarPreuCarret(double preuTotal) {
+        System.out.println("Preu total: " + preuTotal + "€");
+    }
 }

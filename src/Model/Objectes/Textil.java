@@ -7,7 +7,7 @@ public class Textil {
     private int codiBarres;
     private String composicioStr;
 
-    public Textil(String nom, double preu, String composicioStr, int codibarres) {
+    public Textil(String nom, double preu, String composicioStr, int codiBarres) {
         this.nom = nom;
         this.preu = preu;
         this.codiBarres = codiBarres;
@@ -44,5 +44,9 @@ public class Textil {
 
     public void setComposicio(String composicioStr) {
         this.composicioStr = composicioStr;
+    }
+
+    public double calcularPreu() {
+        return preu;
     }
 }
