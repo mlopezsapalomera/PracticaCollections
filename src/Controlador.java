@@ -13,7 +13,10 @@ public class Controlador {
         menuPrincipalControlador();
     }
 
-    /* Mostramos el menu principal y implementamos la logica para escoger las opciones */
+    /*
+     * Mostramos el menu principal y implementamos la logica para escoger las
+     * opciones
+     */
     public static void menuPrincipalControlador() {
         int opcio;
         Vista.menuPrincipal();
@@ -21,13 +24,16 @@ public class Controlador {
             opcio = scann.nextInt();
             switch (opcio) {
                 case 1:
-                    menuIntroduirProductesControlador();
+                    menuGestioMagatzem();
                     break;
                 case 2:
-                    //pasarPerCaixa();
+                    menuIntroduirProductesControlador();
                     break;
                 case 3:
-                    mostrarPreuCarret();
+                    passarPerCaixa();
+                    break;
+                case 4:
+                    mostrarCarroCompra();
                     break;
                 case 0:
                     System.out.println("Fins aviat!");
@@ -36,9 +42,54 @@ public class Controlador {
         } while (opcio != 0);
     }
 
-    /* Si el usuario escoje la opcion 1, se abre el sub-menu
-    y implementamos la logica para escoger las opciones */
-    public static void menuIntroduirProductesControlador(){
+    public static void menuGestioMagatzem() {
+        int opcio;
+        Vista.menuGestioMagatzem();
+        do {
+            opcio = scann.nextInt();
+            switch (opcio) {
+                case 1:
+                    llistarPerCaducitat();
+                    break;
+                case 2:
+                    mostrarTiquetsCompra();
+                    break;
+                case 3:
+                    ordenarTextilsPerComposicio();
+                    break;
+                case 0:
+                    menuPrincipalControlador();
+                    break;
+            }
+        } while (opcio != 0);
+    }
+
+    public static void llistarPerCaducitat() {
+        List<Aliment> aliments = Model.getAliments();
+        aliments.sort(Comparator.comparing(Aliment::getDataCaducitat));
+        Vista.mostrarAliments(aliments);
+    }
+
+    public static void mostrarTiquetsCompra() {
+        List<String> tiquets = Model.getTiquetsCompra();
+        Vista.mostrarTiquetsCompra(tiquets);
+    }
+
+    public static void ordenarTextilsPerComposicio() {
+        List<Textil> textils = Model.getTextils();
+        textils.sort(Comparator.comparing(Textil::getComposicio));
+        Vista.mostrarTextils(textils);
+    }
+
+    public static void mostrarCarroCompra() {
+        Vista.mostrarCarro(Model.getAliments(), Model.getTextils(), Model.getElectronica());
+    }
+
+    /*
+     * Si el usuario escoje la opcion 1, se abre el sub-menu
+     * y implementamos la logica para escoger las opciones
+     */
+    public static void menuIntroduirProductesControlador() {
         int opcio;
         Vista.menuIntroduirProducte();
         do {
@@ -60,7 +111,8 @@ public class Controlador {
         } while (opcio != 0);
     }
 
-    // Logica y formularios para introducir los productos (Alimentos, Textiles y Electronica)
+    // Logica y formularios para introducir los productos (Alimentos, Textiles y
+    // Electronica)
     public static void introduirAliment() {
         if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
             System.out.println("No es poden afegir més productes. El carret està ple.");
@@ -116,7 +168,7 @@ public class Controlador {
         System.out.println("Codi de barres: ");
         int codiBarres = scann.nextInt();
 
-        Textil textil = new Textil (nom, preu, composicioStr, codiBarres);
+        Textil textil = new Textil(nom, preu, composicioStr, codiBarres);
         if (Model.addTextil(textil)) {
             System.out.println("Textil afegit correctament!");
         } else {
@@ -147,9 +199,15 @@ public class Controlador {
         }
     }
 
+    // Mostramos el precio total del carrito
     public static void mostrarPreuCarret() {
         double preuTotal = Model.calcularPreuTotal();
         Vista.mostrarPreuCarret(preuTotal);
     }
 
+    public static void passarPerCaixa() {
+        double preuTotal = Model.calcularPreuTotal();
+        Vista.mostrarTiquetCompra(Model.getAliments(), Model.getTextils(), Model.getElectronica(), preuTotal);
+        Model.buidarCarro();
+    }
 }

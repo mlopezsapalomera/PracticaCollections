@@ -1,4 +1,5 @@
 package Model;
+
 import Model.Objectes.Aliment;
 import Model.Objectes.Electronica;
 import Model.Objectes.Textil;
@@ -9,8 +10,9 @@ public class Model {
     private static List<Aliment> aliments = new ArrayList<>();
     private static List<Textil> textils = new ArrayList<>();
     private static List<Electronica> electronicas = new ArrayList<>();
+    private static List<String> tiquetsCompra = new ArrayList<>();
 
-    public static boolean addAliment(Aliment aliment){
+    public static boolean addAliment(Aliment aliment) {
         if (aliments.size() + textils.size() + electronicas.size() < MAX_PRODUCTS) {
             aliments.add(aliment);
             return true;
@@ -18,7 +20,7 @@ public class Model {
         return false;
     }
 
-    public static boolean addTextil(Textil textil){
+    public static boolean addTextil(Textil textil) {
         if (aliments.size() + textils.size() + electronicas.size() < MAX_PRODUCTS) {
             textils.add(textil);
             return true;
@@ -26,7 +28,7 @@ public class Model {
         return false;
     }
 
-    public static boolean addElectronica(Electronica electronica){
+    public static boolean addElectronica(Electronica electronica) {
         if (aliments.size() + textils.size() + electronicas.size() < MAX_PRODUCTS) {
             electronicas.add(electronica);
             return true;
@@ -58,5 +60,19 @@ public class Model {
             preuTotal += electronica.calcularPreu();
         }
         return preuTotal;
+    }
+
+    public static void buidarCarro() {
+        aliments.clear();
+        textils.clear();
+        electronicas.clear();
+    }
+
+    public static void afegirTiquetCompra(String tiquet) {
+        tiquetsCompra.add(tiquet);
+    }
+
+    public static List<String> getTiquetsCompra() {
+        return tiquetsCompra;
     }
 }
