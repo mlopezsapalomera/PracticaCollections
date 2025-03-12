@@ -1,14 +1,19 @@
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 import Vista.Vista;
+import Model.Model;
+import Model.Objectes.Aliment;
+import Model.Objectes.Textil;
+import Model.Objectes.Electronica;
 
 public class Controlador {
     public static Scanner scann = new Scanner(System.in);
+
+    // Llamamos al menu principal desde el main
     public static void main(String[] args) {
         menuPrincipalControlador();
     }
 
+    /* Mostramos el menu principal y implementamos la logica para escoger las opciones */
     public static void menuPrincipalControlador() {
         int opcio;
         Vista.menuPrincipal();
@@ -31,6 +36,8 @@ public class Controlador {
         } while (opcio != 0);
     }
 
+    /* Si el usuario escoje la opcion 1, se abre el sub-menu
+    y implementamos la logica para escoger las opciones */
     public static void menuIntroduirProductesControlador(){
         int opcio;
         Vista.menuIntroduirProducte();
@@ -53,24 +60,31 @@ public class Controlador {
         } while (opcio != 0);
     }
 
+    // Logica y formularios para introducir los productos (Alimentos, Textiles y Electronica)
     public static void introduirAliment() {
+        scann.nextLine(); // Limpiar linea nueva
         System.out.print("Nom producte: ");
         String nom = scann.nextLine();
         System.out.print("Preu: ");
         double preu = scann.nextDouble();
         System.out.println("Codi de barres: ");
-        int codiBarres;
+        int codiBarres = scann.nextInt();
+        scann.nextLine(); // Limpiar linea nueva
         System.out.print("Data de caducitat (dd/mm/aaaa): ");
         String dataCaducitatStr = scann.nextLine();
+
+        Aliment aliment = new Aliment(nom, preu, codiBarres, dataCaducitatStr);
+        Model.addAliment(aliment);
+        System.out.println("Aliment afegit correctament!");
     }
 
     public static void introduirTextil() {
+        String composicioStr = "";
         System.out.println("Nom producte: ");
         String nom = scann.nextLine();
         System.out.println("Preu: ");
         double preu = scann.nextDouble();
         int opcio;
-        String composicioStr;
         Vista.menuTextilComposicio();
         opcio = scann.nextInt();
         switch (opcio) {
@@ -89,9 +103,24 @@ public class Controlador {
         }
         System.out.println("Codi de barres: ");
         int codiBarres = scann.nextInt();
+
+        Textil textil = new Textil (nom, preu, composicioStr, codiBarres);
+        Model.addTextil(textil);
+        System.out.println("Textil afegit correctament!");
     }
 
     public static void introduirElectronica() {
+        System.out.println("Nom producte: ");
+        String nom = scann.nextLine();
+        System.out.println("Preu: ");
+        double preu = scann.nextDouble();
+        System.out.println("Garantia (dies): ");
+        int diesGarantia = scann.nextInt();
+        System.out.println("Codi de barres: ");
+        int codiBarres = scann.nextInt();
 
+        Electronica electronica = new Electronica(nom, preu, diesGarantia, codiBarres);
+        Model.addElectronica(electronica);
+        System.out.println("Electronica afegida correctament!");
     }
 }

@@ -1,6 +1,8 @@
 package Vista;
 
 public class Vista {
+
+    // Menu Principal
     public static void menuPrincipal() {
         System.out.println("------------");
         System.out.println("-- INICI --- ");
@@ -11,6 +13,7 @@ public class Vista {
         System.out.println("0) Sortir");
     }
 
+    // Sub-Menu a la hora de introducir un producto
     public static void menuIntroduirProducte() {
         System.out.println("---------------");
         System.out.println("-- PRODUCTE --- ");
@@ -21,6 +24,7 @@ public class Vista {
         System.out.println("0) Tornar");
     }
 
+    // Menu de Composicones para los productos textiles
     public static void menuTextilComposicio() {
         System.out.println("----------------");
         System.out.println("-- COMPOSICIO -- ");
