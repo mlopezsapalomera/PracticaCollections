@@ -204,11 +204,16 @@ public class Controlador {
 
     public static void passarPerCaixa() {
         double preuTotal = Model.calcularPreuTotal();
-        Map<Integer, Integer> carretCompra = new HashMap<>();
-        Model.getAliments().forEach(aliment -> carretCompra.put(aliment.getCodiBarres(), 1));
-        Model.getTextils().forEach(textil -> carretCompra.put(textil.getCodiBarres(), 1));
-        Model.getElectronica().forEach(electronica -> carretCompra.put(electronica.getCodiBarres(), 1));
-        Vista.mostrarTiquetCompra(carretCompra, preuTotal);
+        Map<Integer, Integer> carretCompra = Model.getCarretCompra();
+        Map<String, Double> productes = new HashMap<>();
+
+        carretCompra.forEach((codiBarres, quantitat) -> {
+            String nomProducte = buscarProductePerCodiBarres(codiBarres);
+            double preuUnitari = buscarPreuPerCodiBarres(codiBarres);
+            productes.put(nomProducte, preuUnitari * quantitat);
+        });
+
+        Vista.mostrarTiquetCompra(productes, preuTotal);
         Model.buidarCarro();
     }
 
@@ -226,5 +231,21 @@ public class Controlador {
                                 .map(Electronica::getNom)
                                 .findFirst()
                                 .orElse("Producte no trobat")));
+    }
+
+    public static double buscarPreuPerCodiBarres(int codiBarres) {
+        return Model.getAliments().stream()
+                .filter(aliment -> aliment.getCodiBarres() == codiBarres)
+                .map(Aliment::getPreu)
+                .findFirst()
+                .orElse(Model.getTextils().stream()
+                        .filter(textil -> textil.getCodiBarres() == codiBarres)
+                        .map(Textil::getPreu)
+                        .findFirst()
+                        .orElse(Model.getElectronica().stream()
+                                .filter(electronica -> electronica.getCodiBarres() == codiBarres)
+                                .map(Electronica::getPreu)
+                                .findFirst()
+                                .orElse(0.0)));
     }
 }

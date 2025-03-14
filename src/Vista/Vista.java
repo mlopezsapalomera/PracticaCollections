@@ -2,9 +2,8 @@ package Vista;
 
 import java.time.LocalDate;
 import java.util.*;
-import Model.Model;
 import Model.objects.*;
-import Controlador.Controlador;
+
 
 public class Vista {
 
@@ -57,28 +56,14 @@ public class Vista {
     }
 
 
-    public static void mostrarTiquetCompra(Map<Integer, Integer> carretCompra, double preuTotal) {
+    public static void mostrarTiquetCompra(Map<String, Double> productes, double preuTotal) {
         System.out.println("------------");
         System.out.println("-- TIQUET -- ");
         System.out.println("------------");
         System.out.println("Data de la compra: " + LocalDate.now());
         System.out.println("Nom del supermercat: SAPAMERCAT");
-        carretCompra.forEach((codiBarres, quantitat) -> {
-            String nomProducte = Controlador.buscarProductePerCodiBarres(codiBarres);
-            double preuUnitari = Model.getAliments().stream()
-                    .filter(aliment -> aliment.getCodiBarres() == codiBarres)
-                    .map(Aliment::getPreu)
-                    .findFirst()
-                    .orElse(Model.getTextils().stream()
-                            .filter(textil -> textil.getCodiBarres() == codiBarres)
-                            .map(Textil::getPreu)
-                            .findFirst()
-                            .orElse(Model.getElectronica().stream()
-                                    .filter(electronica -> electronica.getCodiBarres() == codiBarres)
-                                    .map(Electronica::getPreu)
-                                    .findFirst()
-                                    .orElse(0.0)));
-            System.out.println("Producte: " + nomProducte + " - Quantitat: " + quantitat + " - Preu unitari: " + preuUnitari + "€ - Preu total: " + (preuUnitari * quantitat) + "€");
+        productes.forEach((nomProducte, preuTotalProducte) -> {
+            System.out.println("Producte: " + nomProducte + " - Preu total: " + preuTotalProducte + "€");
         });
         System.out.println("Preu total: " + preuTotal + "€");
     }
