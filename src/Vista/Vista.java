@@ -4,9 +4,10 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import Model.Model;
 import Model.Objectes.Aliment;
 import Model.Objectes.Electronica;
+import Controlador.Controlador;
 import Model.Objectes.Textil;
 
 public class Vista {
@@ -60,26 +61,29 @@ public class Vista {
     }
 
     // Modificar el método mostrarTiquetCompra
-    public static void mostrarTiquetCompra(List<Aliment> aliments, List<Textil> textils, List<Electronica> electronicas,
-            double preuTotal) {
+    public static void mostrarTiquetCompra(Map<Integer, Integer> carretCompra, double preuTotal) {
         System.out.println("------------");
         System.out.println("-- TIQUET -- ");
         System.out.println("------------");
         System.out.println("Data de la compra: " + LocalDate.now());
         System.out.println("Nom del supermercat: SAPAMERCAT");
-        Map<String, Integer> productes = new HashMap<>();
-        for (Aliment aliment : aliments) {
-            productes.put(aliment.getNom(), productes.getOrDefault(aliment.getNom(), 0) + 1);
-        }
-        for (Textil textil : textils) {
-            productes.put(textil.getNom(), productes.getOrDefault(textil.getNom(), 0) + 1);
-        }
-        for (Electronica electronica : electronicas) {
-            productes.put(electronica.getNom(), productes.getOrDefault(electronica.getNom(), 0) + 1);
-        }
-        for (Map.Entry<String, Integer> entry : productes.entrySet()) {
-            System.out.println("Producte: " + entry.getKey() + " - Quantitat: " + entry.getValue());
-        }
+        carretCompra.forEach((codiBarres, quantitat) -> {
+            String nomProducte = Controlador.buscarProductePerCodiBarres(codiBarres);
+            double preuUnitari = Model.getAliments().stream()
+                    .filter(aliment -> aliment.getCodiBarres() == codiBarres)
+                    .map(Aliment::getPreu)
+                    .findFirst()
+                    .orElse(Model.getTextils().stream()
+                            .filter(textil -> textil.getCodiBarres() == codiBarres)
+                            .map(Textil::getPreu)
+                            .findFirst()
+                            .orElse(Model.getElectronica().stream()
+                                    .filter(electronica -> electronica.getCodiBarres() == codiBarres)
+                                    .map(Electronica::getPreu)
+                                    .findFirst()
+                                    .orElse(0.0)));
+            System.out.println("Producte: " + nomProducte + " - Quantitat: " + quantitat + " - Preu unitari: " + preuUnitari + "€ - Preu total: " + (preuUnitari * quantitat) + "€");
+        });
         System.out.println("Preu total: " + preuTotal + "€");
     }
 

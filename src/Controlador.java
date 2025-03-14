@@ -210,4 +210,21 @@ public class Controlador {
         Vista.mostrarTiquetCompra(Model.getAliments(), Model.getTextils(), Model.getElectronica(), preuTotal);
         Model.buidarCarro();
     }
+
+    // Añadir método para buscar producto por código de barras
+    public static String buscarProductePerCodiBarres(int codiBarres) {
+        return Model.getAliments().stream()
+                .filter(aliment -> aliment.getCodiBarres() == codiBarres)
+                .map(Aliment::getNom)
+                .findFirst()
+                .orElse(Model.getTextils().stream()
+                        .filter(textil -> textil.getCodiBarres() == codiBarres)
+                        .map(Textil::getNom)
+                        .findFirst()
+                        .orElse(Model.getElectronica().stream()
+                                .filter(electronica -> electronica.getCodiBarres() == codiBarres)
+                                .map(Electronica::getNom)
+                                .findFirst()
+                                .orElse("Producte no trobat")));
+    }
 }

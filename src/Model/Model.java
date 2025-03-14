@@ -11,6 +11,8 @@ public class Model {
     private static List<Textil> textils = new ArrayList<>();
     private static List<Electronica> electronicas = new ArrayList<>();
     private static List<String> tiquetsCompra = new ArrayList<>();
+    // Añadir un Map para gestionar el carrito de compras
+    private static Map<Integer, Integer> carretCompra = new HashMap<>();
 
     public static boolean addAliment(Aliment aliment) {
         if (aliments.size() + textils.size() + electronicas.size() < MAX_PRODUCTS) {
@@ -74,5 +76,18 @@ public class Model {
 
     public static List<String> getTiquetsCompra() {
         return tiquetsCompra;
+    }
+
+    // Añadir métodos para gestionar el carrito de compras
+    public static void afegirAlCarret(int codiBarres) {
+        carretCompra.put(codiBarres, carretCompra.getOrDefault(codiBarres, 0) + 1);
+    }
+
+    public static void buidarCarret() {
+        carretCompra.clear();
+    }
+
+    public static Map<Integer, Integer> getCarretCompra() {
+        return carretCompra;
     }
 }

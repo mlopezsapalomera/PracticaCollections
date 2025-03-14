@@ -17,16 +17,32 @@ public class Electronica {
         return nom;
     }
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     public double getPreu() {
         return preu;
+    }
+
+    public void setPreu(double preu) {
+        this.preu = preu;
     }
 
     public int getDiesGarantia() {
         return diesGarantia;
     }
 
-    public int getcodiBarres() {
+    public void setDiesGarantia(int diesGarantia) {
+        this.diesGarantia = diesGarantia;
+    }
+
+    public int getCodiBarres() {
         return codiBarres;
+    }
+
+    public void setCodiBarres(int codiBarres) {
+        this.codiBarres = codiBarres;
     }
 
     public double calcularPreu() {

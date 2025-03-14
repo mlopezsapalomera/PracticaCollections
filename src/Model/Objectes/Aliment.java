@@ -3,7 +3,7 @@ import java.time.*;
 import java.time.format.*;
 import java.time.temporal.*;
 
-public class Aliment {
+public class Aliment implements Comparable<Aliment> {
     private String nom;
     private double preu;
     private int codiBarres;
@@ -53,6 +53,11 @@ public class Aliment {
         LocalDate dataActual = LocalDate.now();
         long diesFinsCaducitat = ChronoUnit.DAYS.between(dataActual, dataCaducitat);
         return preu - preu * (1.0 / (diesFinsCaducitat + 1)) + (preu * 0.1);
+    }
+
+    @Override
+    public int compareTo(Aliment other) {
+        return this.dataCaducitat.compareTo(other.dataCaducitat);
     }
 }
 
