@@ -1,9 +1,8 @@
 package Model;
-
-import Model.Objectes.Aliment;
-import Model.Objectes.Electronica;
-import Model.Objectes.Textil;
 import java.util.*;
+import Model.objects.Aliment;
+import Model.objects.Electronica;
+import Model.objects.Textil;
 
 public class Model {
     private static final int MAX_PRODUCTS = 100;

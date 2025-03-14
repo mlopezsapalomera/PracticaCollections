@@ -1,17 +1,15 @@
+package Controlador;
+
 import java.util.*;
 import Vista.Vista;
 import Model.Model;
-import Model.Objectes.Aliment;
-import Model.Objectes.Textil;
-import Model.Objectes.Electronica;
+import Model.objects.*;
 
 public class Controlador {
     public static Scanner scann = new Scanner(System.in);
 
     // Llamamos al menu principal desde el main
-    public static void main(String[] args) {
-        menuPrincipalControlador();
-    }
+
 
     /*
      * Mostramos el menu principal y implementamos la logica para escoger las
@@ -199,7 +197,6 @@ public class Controlador {
         }
     }
 
-    // Mostramos el precio total del carrito
     public static void mostrarPreuCarret() {
         double preuTotal = Model.calcularPreuTotal();
         Vista.mostrarPreuCarret(preuTotal);
@@ -207,11 +204,14 @@ public class Controlador {
 
     public static void passarPerCaixa() {
         double preuTotal = Model.calcularPreuTotal();
-        Vista.mostrarTiquetCompra(Model.getAliments(), Model.getTextils(), Model.getElectronica(), preuTotal);
+        Map<Integer, Integer> carretCompra = new HashMap<>();
+        Model.getAliments().forEach(aliment -> carretCompra.put(aliment.getCodiBarres(), 1));
+        Model.getTextils().forEach(textil -> carretCompra.put(textil.getCodiBarres(), 1));
+        Model.getElectronica().forEach(electronica -> carretCompra.put(electronica.getCodiBarres(), 1));
+        Vista.mostrarTiquetCompra(carretCompra, preuTotal);
         Model.buidarCarro();
     }
 
-    // Añadir método para buscar producto por código de barras
     public static String buscarProductePerCodiBarres(int codiBarres) {
         return Model.getAliments().stream()
                 .filter(aliment -> aliment.getCodiBarres() == codiBarres)

@@ -1,4 +1,4 @@
-package Model.Objectes;
+package Model.objects;
 
 public class Electronica {
     private String nom;

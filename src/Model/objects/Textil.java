@@ -1,5 +1,5 @@
 // src/Model/Objectes/Textil.java
-package Model.Objectes;
+package Model.objects;
 
 public class Textil {
     private String nom;

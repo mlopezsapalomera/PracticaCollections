@@ -1,14 +1,10 @@
 package Vista;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import Model.Model;
-import Model.Objectes.Aliment;
-import Model.Objectes.Electronica;
+import Model.objects.*;
 import Controlador.Controlador;
-import Model.Objectes.Textil;
 
 public class Vista {
 
@@ -60,7 +56,7 @@ public class Vista {
         System.out.println("Preu total: " + preuTotal + "€");
     }
 
-    // Modificar el método mostrarTiquetCompra
+
     public static void mostrarTiquetCompra(Map<Integer, Integer> carretCompra, double preuTotal) {
         System.out.println("------------");
         System.out.println("-- TIQUET -- ");

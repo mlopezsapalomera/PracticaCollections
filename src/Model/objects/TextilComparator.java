@@ -1,4 +1,4 @@
-package Model.Objectes;
+package Model.objects;
 import java.util.Comparator;
 
 public class TextilComparator implements Comparator<Textil> {
