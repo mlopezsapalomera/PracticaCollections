@@ -1,49 +1,51 @@
 package Controlador;
 
+import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.io.*;
 import Vista.Vista;
 import Model.Model;
 import Model.objects.*;
+import Model.Exceptions.*;
 
 public class Controlador {
     public static Scanner scann = new Scanner(System.in);
 
-    // Llamamos al menu principal desde el main
-
-
-    /*
-     * Mostramos el menu principal y implementamos la logica para escoger las
-     * opciones
-     */
     public static void menuPrincipalControlador() {
         int opcio;
-        Vista.menuPrincipal();
         do {
+            Vista.menuPrincipal();
             opcio = scann.nextInt();
-            switch (opcio) {
-                case 1:
-                    menuGestioMagatzem();
-                    break;
-                case 2:
-                    menuIntroduirProductesControlador();
-                    break;
-                case 3:
-                    passarPerCaixa();
-                    break;
-                case 4:
-                    mostrarCarroCompra();
-                    break;
-                case 0:
-                    System.out.println("Fins aviat!");
-                    break;
+            try {
+                switch (opcio) {
+                    case 1:
+                        menuIntroduirProductesControlador();
+                        break;
+                    case 2:
+                        passarPerCaixa();
+                        break;
+                    case 3:
+                        mostrarCarroCompra();
+                        break;
+                    case 0:
+                        System.out.println("Fins aviat!");
+                        break;
+                    default:
+                        throw new EnumFailException("Opció no vàlida");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Entrada no vàlida.");
+                scann.next(); // Limpiar el scanner
+            } catch (EnumFailException e) {
+                System.out.println(e.getMessage());
             }
         } while (opcio != 0);
     }
 
     public static void menuGestioMagatzem() {
         int opcio;
-        Vista.menuGestioMagatzem();
         do {
+            Vista.menuGestioMagatzem();
             opcio = scann.nextInt();
             switch (opcio) {
                 case 1:
@@ -83,14 +85,10 @@ public class Controlador {
         Vista.mostrarCarro(Model.getAliments(), Model.getTextils(), Model.getElectronica());
     }
 
-    /*
-     * Si el usuario escoje la opcion 1, se abre el sub-menu
-     * y implementamos la logica para escoger las opciones
-     */
     public static void menuIntroduirProductesControlador() {
         int opcio;
-        Vista.menuIntroduirProducte();
         do {
+            Vista.menuIntroduirProducte();
             opcio = scann.nextInt();
             switch (opcio) {
                 case 1:
@@ -109,97 +107,121 @@ public class Controlador {
         } while (opcio != 0);
     }
 
-    // Logica y formularios para introducir los productos (Alimentos, Textiles y
-    // Electronica)
     public static void introduirAliment() {
-        if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
-            System.out.println("No es poden afegir més productes. El carret està ple.");
-            return;
-        }
-        scann.nextLine(); // Limpiar linea nueva
-        System.out.print("Nom producte: ");
-        String nom = scann.nextLine();
-        System.out.print("Preu: ");
-        double preu = scann.nextDouble();
-        System.out.println("Codi de barres: ");
-        int codiBarres = scann.nextInt();
-        scann.nextLine(); // Limpiar linea nueva
-        System.out.print("Data de caducitat (dd/mm/aaaa): ");
-        String dataCaducitatStr = scann.nextLine();
+        try {
+            if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
+                throw new LimitProductesException("No es poden afegir més productes. El carret està ple.");
+            }
+            scann.nextLine(); // Limpiar linea nueva
+            System.out.print("Nom producte: ");
+            String nom = scann.nextLine();
+            if (nom.length() > 50) {
+                throw new LimitCaracteresException("El nom del producte supera el límit de caràcters permès.");
+            }
+            System.out.print("Preu: ");
+            double preu = scann.nextDouble();
+            if (preu < 0) {
+                throw new NegatiuException("El preu no pot ser negatiu.");
+            }
+            System.out.print("Codi de barres: ");
+            int codiBarres = scann.nextInt();
+            scann.nextLine(); // Limpiar linea nueva
+            System.out.print("Data de caducitat (dd/MM/yyyy): ");
+            String dataCaducitatStr = scann.nextLine();
 
-        Aliment aliment = new Aliment(nom, preu, codiBarres, dataCaducitatStr);
-        if (Model.addAliment(aliment)) {
-            System.out.println("Aliment afegit correctament!");
-        } else {
-            System.out.println("No es poden afegir més productes. El carret està ple.");
+            try {
+                Aliment aliment = new Aliment(nom, preu, codiBarres, dataCaducitatStr);
+                if (Model.addAliment(aliment)) {
+                    System.out.println("Aliment afegit correctament!");
+                } else {
+                    throw new LimitProductesException("No es poden afegir més productes. El carret està ple.");
+                }
+            } catch (DateTimeParseException e) {
+                throw new DataCaducitatException("Format de data incorrecte. Si us plau, introdueix la data en format dd/MM/yyyy.");
+            }
+        } catch (LimitProductesException | LimitCaracteresException | NegatiuException | DataCaducitatException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     public static void introduirTextil() {
-        if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
-            System.out.println("No es poden afegir més productes. El carret està ple.");
-            return;
-        }
-        String composicioStr = "";
-        scann.nextLine(); // Limpiar linea nueva
-        System.out.println("Nom producte: ");
-        String nom = scann.nextLine();
-        System.out.println("Preu: ");
-        double preu = scann.nextDouble();
-        int opcio;
-        Vista.menuTextilComposicio();
-        opcio = scann.nextInt();
-        switch (opcio) {
-            case 1:
-                composicioStr = "Cotó";
-                break;
-            case 2:
-                composicioStr = "Llana";
-                break;
-            case 3:
-                composicioStr = "Poliester";
-                break;
-            case 4:
-                composicioStr = "Altres";
-                break;
-        }
-        System.out.println("Codi de barres: ");
-        int codiBarres = scann.nextInt();
+        try {
+            if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
+                throw new LimitProductesException("No es poden afegir més productes. El carret està ple.");
+            }
+            String composicioStr = "";
+            scann.nextLine(); // Limpiar linea nueva
+            System.out.print("Nom producte: ");
+            String nom = scann.nextLine();
+            if (nom.length() > 50) {
+                throw new LimitCaracteresException("El nom del producte supera el límit de caràcters permès.");
+            }
+            System.out.print("Preu: ");
+            double preu = scann.nextDouble();
+            if (preu < 0) {
+                throw new NegatiuException("El preu no pot ser negatiu.");
+            }
+            int opcio;
+            Vista.menuTextilComposicio();
+            opcio = scann.nextInt();
+            switch (opcio) {
+                case 1:
+                    composicioStr = "Cotó";
+                    break;
+                case 2:
+                    composicioStr = "Llana";
+                    break;
+                case 3:
+                    composicioStr = "Poliester";
+                    break;
+                case 4:
+                    composicioStr = "Altres";
+                    break;
+            }
+            System.out.print("Codi de barres: ");
+            int codiBarres = scann.nextInt();
 
-        Textil textil = new Textil(nom, preu, composicioStr, codiBarres);
-        if (Model.addTextil(textil)) {
-            System.out.println("Textil afegit correctament!");
-        } else {
-            System.out.println("No es poden afegir més productes. El carret està ple.");
+            Textil textil = new Textil(nom, preu, composicioStr, codiBarres);
+            if (Model.addTextil(textil)) {
+                System.out.println("Textil afegit correctament!");
+            } else {
+                throw new LimitProductesException("No es poden afegir més productes. El carret està ple.");
+            }
+        } catch (LimitProductesException | LimitCaracteresException | NegatiuException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     public static void introduirElectronica() {
-        if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
-            System.out.println("No es poden afegir més productes. El carret està ple.");
-            return;
-        }
-        scann.nextLine(); // Limpiar linea nueva
-        System.out.println("Nom producte: ");
-        String nom = scann.nextLine();
-        System.out.println("Preu: ");
-        double preu = scann.nextDouble();
-        System.out.println("Garantia (dies): ");
-        int diesGarantia = scann.nextInt();
-        System.out.println("Codi de barres: ");
-        int codiBarres = scann.nextInt();
+        try {
+            if (Model.getAliments().size() + Model.getTextils().size() + Model.getElectronica().size() >= 100) {
+                throw new LimitProductesException("No es poden afegir més productes. El carret està ple.");
+            }
+            scann.nextLine(); // Limpiar linea nueva
+            System.out.print("Nom producte: ");
+            String nom = scann.nextLine();
+            if (nom.length() > 50) {
+                throw new LimitCaracteresException("El nom del producte supera el límit de caràcters permès.");
+            }
+            System.out.print("Preu: ");
+            double preu = scann.nextDouble();
+            if (preu < 0) {
+                throw new NegatiuException("El preu no pot ser negatiu.");
+            }
+            System.out.print("Garantia (dies): ");
+            int diesGarantia = scann.nextInt();
+            System.out.print("Codi de barres: ");
+            int codiBarres = scann.nextInt();
 
-        Electronica electronica = new Electronica(nom, preu, diesGarantia, codiBarres);
-        if (Model.addElectronica(electronica)) {
-            System.out.println("Electronica afegida correctament!");
-        } else {
-            System.out.println("No es poden afegir més productes. El carret està ple.");
+            Electronica electronica = new Electronica(nom, preu, diesGarantia, codiBarres);
+            if (Model.addElectronica(electronica)) {
+                System.out.println("Electronica afegida correctament!");
+            } else {
+                throw new LimitProductesException("No es poden afegir més productes. El carret està ple.");
+            }
+        } catch (LimitProductesException | LimitCaracteresException | NegatiuException e) {
+            System.out.println(e.getMessage());
         }
-    }
-
-    public static void mostrarPreuCarret() {
-        double preuTotal = Model.calcularPreuTotal();
-        Vista.mostrarPreuCarret(preuTotal);
     }
 
     public static void passarPerCaixa() {
@@ -247,5 +269,18 @@ public class Controlador {
                                 .map(Electronica::getPreu)
                                 .findFirst()
                                 .orElse(0.0)));
+    }
+
+    public static void llegirFitxer(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: Fitxer no trobat.");
+        } catch (IOException e) {
+            System.out.println("Error: Problema llegint el fitxer.");
+        }
     }
 }

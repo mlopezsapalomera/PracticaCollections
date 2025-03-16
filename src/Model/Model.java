@@ -69,21 +69,8 @@ public class Model {
         electronicas.clear();
     }
 
-    public static void afegirTiquetCompra(String tiquet) {
-        tiquetsCompra.add(tiquet);
-    }
-
     public static List<String> getTiquetsCompra() {
         return tiquetsCompra;
-    }
-
-    // Añadir métodos para gestionar el carrito de compras
-    public static void afegirAlCarret(int codiBarres) {
-        carretCompra.put(codiBarres, carretCompra.getOrDefault(codiBarres, 0) + 1);
-    }
-
-    public static void buidarCarret() {
-        carretCompra.clear();
     }
 
     public static Map<Integer, Integer> getCarretCompra() {

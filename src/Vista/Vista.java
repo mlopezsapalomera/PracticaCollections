@@ -4,15 +4,13 @@ import java.time.LocalDate;
 import java.util.*;
 import Model.objects.*;
 
-
 public class Vista {
 
-    // Menu Principal
     public static void menuPrincipal() {
         System.out.println("------------");
         System.out.println("-- INICI --- ");
         System.out.println("------------");
-        System.out.println("1) Introducir Producte");
+        System.out.println("1) Introduir Producte");
         System.out.println("2) Passar per caixa");
         System.out.println("3) Mostrar carret de compra");
         System.out.println("0) Sortir");
@@ -28,7 +26,6 @@ public class Vista {
         System.out.println("0) Tornar");
     }
 
-    // Sub-Menu a la hora de introducir un producto
     public static void menuIntroduirProducte() {
         System.out.println("---------------");
         System.out.println("-- PRODUCTE --- ");
@@ -39,7 +36,6 @@ public class Vista {
         System.out.println("0) Tornar");
     }
 
-    // Menu de Composicones para los productos textiles
     public static void menuTextilComposicio() {
         System.out.println("----------------");
         System.out.println("-- COMPOSICIO -- ");
@@ -54,7 +50,6 @@ public class Vista {
     public static void mostrarPreuCarret(double preuTotal) {
         System.out.println("Preu total: " + preuTotal + "€");
     }
-
 
     public static void mostrarTiquetCompra(Map<String, Double> productes, double preuTotal) {
         System.out.println("------------");
